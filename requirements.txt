@@ -1,0 +1,6 @@
+omegaconf
+pandas
+numpy
+sklearn
+scikit-learn
+flask

@@ -1,0 +1,48 @@
+# deps - specify ddependes
+
+stages:
+  prepare_data:
+    cmd: python ./prepare_data.py
+    deps :
+      - ./prepare_data.py
+      - ./data/IMDB-Dataset.csv
+    params:
+      - data 
+    outs:
+      - ./data/train.csv
+      - ./data/test.csv
+
+  make_features:
+    cmd: python ./make_features.py
+    deps:
+      - ./make_features.py
+      - ./data/train.csv
+      - ./data/test.csv
+    params:
+      - features
+    outs :
+      - ./data/train.joblib
+      - ./data/test.joblib
+
+  train:
+    cmd: python ./train.py
+    deps:
+      - ./train.py
+      - ./data/train.csv
+      - ./data/train.joblib
+    params:
+      - train
+    outs :
+      - ./data/model.joblib
+
+  evaluate_features:
+    cmd: python evaluate.py
+    deps:
+      - ./evaluate.py
+      - ./data/test.csv
+      - ./data/test.joblib
+      - ./data/model.joblib
+    params:
+      - evaluate
+    outs:
+     - ./data/results.yaml
